@@ -36,13 +36,13 @@ uchar m[] = {
 
 Mat read_image(string filename);
 
-/*
 void
 convert_to_grayscale(Mat src, Mat &dest);
 
 Mat
 convert_to_black_and_white(Mat src);
 
+/*
 void
 print_image(Mat mat);
 
@@ -52,38 +52,42 @@ reverse_color(Mat mat);
 
 int main(int argc, char *argv[])
 {
-    auto matrixBuilder = MatrixBuilder("matrix1.png", m, 27, 27);
-    matrixBuilder.save();
-    matrixBuilder.print();
+    // auto matrixBuilder = MatrixBuilder("matrix1.png", m, 27, 27);
+    // matrixBuilder.save();
+    // matrixBuilder.print();
 
-/*
     if (argc != 2)
     {
         cerr << "No argument given." << endl;
         return 1;
     }
 
-    if (img = read_image(filename); img.empty() or !img`.data)
+    Mat img;
+
+    string filename = argv[1];
+
+    if (img = read_image(filename); img.empty())
     {
         cerr << "Couldn't read image." << endl;
         return 1;
     }
-*/
-    auto zsalgo = ZSAlgorithm(matrixBuilder.mat);
+
+    img = convert_to_black_and_white(img);
+
+    auto zsalgo = ZSAlgorithm(img);
     auto skeleton = zsalgo.solve();
     // cout << skeleton << endl;
     if (int k = waitKey(0); k == 's')
-        imwrite("../output/skeleton-" + matrixBuilder.filename, skeleton,
+        imwrite("../output/skeleton-" + filename, skeleton,
                 {IMWRITE_PNG_COMPRESSION});
     return 0;
 }
 
 Mat read_image(string filename)
 {
-    return imread("../images/" + filename, IMREAD_GRAYSCALE);
+    return imread("../images/" + filename);
 }
 
-/*
 void convert_to_grayscale(Mat src, Mat &dest) {
     cvtColor(src, dest, COLOR_BGR2GRAY);
 }
@@ -97,6 +101,7 @@ Mat convert_to_black_and_white(Mat src) {
     return bw_img;
 }
 
+/*
 void print_image(Mat mat) {
     for (int i = 0; i < mat.rows; ++i)
 	{

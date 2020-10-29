@@ -50,59 +50,14 @@ Mat ZSAlgorithm::solve()
         pixels1.clear();                                                            /* c5 */
 
         cout << "Step 1" << endl;
-        //verify_conditions(pixels1, 1);
-        for (row = 1; row < img.rows - 1; ++row){                                 /* c6*(m-1) */
-            for (col = 1; col < img.cols - 1; ++col){                          /* c7*(n-1)*(m-2) */
-                // cout << row << " - " << col << endl;
-                auto p1 = set_color(img.at<uchar>(row, col));                       /* c8 */
-                auto [p2, p3, p4, p5, p6, p7, p8, p9] = get_neighbours(row, col);   /* c9 */
-                if (
-                    p1 == BLACK and                                                 /* c10 */
-                    in_range(count_black(row, col), 2, 6) and                       /* c11 */
-                    get_transitions(row, col) == 1 and                              /* c12 */
-                    (p2 == WHITE or p4 == WHITE or p6 == WHITE) and                 /* c13 */
-                    (p4 == WHITE or p6 == WHITE or p8 == WHITE))                    /* c14 */
-               { 
-                    pixels1.emplace_back(row, col);                                 /* c15 */
-               }
-            }
-        }
-        for (auto const &[row, col] : pixels1){                                     /* c16*(n-1)*(m-1) */
-
-            cout << "removing: " << row << ", " << col << endl;
-
-            img.at<uchar>(row, col) = WHITE;                                        /* c */
-        }
-
-        cout << img << endl;    
+        verify_conditions(pixels1, 1); 
 
         imshow("result", img);
         waitKey(0);
         pixels2.clear();                                                            /* c5 */
 
         cout << "Step 2" << endl;
-        //verify_conditions(pixels2,2);
-        for (row = 1; row < img.rows - 1; ++row){                                    /* c1000*(m-1) */
-            for (col = 1; col < img.cols - 1; ++col){                                /* c1001*(n-1)*(m-2) */
-                auto p1 = set_color(img.at<uchar>(row, col));                        /* c1002*/
-                auto [p2, p3, p4, p5, p6, p7, p8, p9] = get_neighbours(row, col);    /* c1002*/
-                if (
-                    p1 == BLACK and
-                    in_range(count_black(row, col), 2, 6) and
-                    get_transitions(row, col) == 1 and
-                    (p2 == WHITE or p4 == WHITE or p8 == WHITE) and
-                    (p2 == WHITE or p6 == WHITE or p8 == WHITE))
-                    pixels2.emplace_back(row, col);
-            }
-        }
-        for (auto const &[row, col] : pixels2){
-
-            cout << "removing: " << row << ", " << col << endl;
-
-            img.at<uchar>(row, col) = WHITE;
-        }
-
-        cout << img << endl;
+        verify_conditions(pixels2,2);
 
         imshow("result", img);
         waitKey(0);
