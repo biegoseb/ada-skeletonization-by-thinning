@@ -34,7 +34,10 @@ void GuoHall::thinning_iteration(Mat& img, int itr)
                              : ((p2 == FG | p3 == FG | p5 == BG) & p4 == FG);
             
             if (C == 1 && (N >= 2 && N <= 3) && m == 0)
+            {   
+                cout << "removing pixel: (" << row << ", " << col << ")" << endl;
                 marker.at<uchar>(row, col) = 1;
+            }
         }
     }
     img &= ~marker;
@@ -66,13 +69,12 @@ Mat GuoHall::solve_guo_hall(const string& file)
         cout << "Couldn't open image." << endl;
     }
     Mat skeleton;
-    cvtColor(img, skeleton, COLOR_BGR2GRAY);
+    cv::cvtColor(img, skeleton, COLOR_BGR2GRAY);
     GuoHall::thinning(skeleton);
 
-    imshow("input ", img);
-    imshow("output", skeleton);
-    waitKey();
-    
+    cv::imshow("input ", img);
+    cv::imshow("output", skeleton);
+    while(cv::waitKey(1) != 27);                // ascii value of ESC
     return skeleton;
 }
 
