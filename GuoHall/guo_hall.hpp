@@ -1,5 +1,4 @@
-#ifndef GUO_HALL_HPP
-#define GUO_HALL_HPP
+#pragma once
 
 #include <iostream>
 #include <tuple>
@@ -25,5 +24,3 @@ public:
     static Mat solve_guo_hall(const string& file);
     static void save(const string& file, Mat& skeleton);
 };
-
-#endif // GUO_HALL_HPP

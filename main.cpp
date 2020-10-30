@@ -1,5 +1,6 @@
-#include "zs_algorithm.hpp"
-#include "../matrix-builder/matrix_builder.hpp"
+#include "ZhangSuen/zs_algorithm.hpp"
+#include "GuoHall/guo_hall.hpp"
+// #include "../matrix-builder/matrix_builder.hpp"
 
 using namespace cv;
 using namespace std;
@@ -52,6 +53,9 @@ reverse_color(Mat mat);
 
 int main(int argc, char *argv[])
 {
+    // auto skeleton = GuoHall::solve_guo_hall(argv[1]);
+    // GuoHall::save(argv[1], skeleton);
+    
     // auto matrixBuilder = MatrixBuilder("matrix1.png", m, 27, 27);
     // matrixBuilder.save();
     // matrixBuilder.print();
@@ -78,7 +82,7 @@ int main(int argc, char *argv[])
     auto skeleton = zsalgo.solve();
     // cout << skeleton << endl;
     if (int k = waitKey(0); k == 's')
-        imwrite("../output/skeleton-" + filename, skeleton,
+        imwrite("../output/skeleton-zs-" + filename, skeleton,
                 {IMWRITE_PNG_COMPRESSION});
     return 0;
 }
