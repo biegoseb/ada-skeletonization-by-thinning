@@ -26,8 +26,8 @@ void ZSAlgorithm::verify_conditions(vector<pixel> &aux, int tmp) {
             }
         }
     }
-        for (auto const &[row, col] : aux)                                  /* c16*(n-1)*(m-1) */
-            img.at<uchar>(row, col) = WHITE;                                     /* c */
+    for (auto const &[row, col] : aux)                                      /* c16*(n-1)*(m-1) */
+        img.at<uchar>(row, col) = WHITE;                                        /* c */
 }
 
 //aumentar cuadro blanco al rededor de la imagen
