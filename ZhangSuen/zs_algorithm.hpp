@@ -1,13 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include <tuple>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-#include <array>
-#include <algorithm>
-#include <utility>
 
 using namespace std;
 using namespace cv;

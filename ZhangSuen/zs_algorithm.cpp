@@ -1,62 +1,52 @@
 #include "zs_algorithm.hpp"
-#include <utility>
 
 ZSAlgorithm::ZSAlgorithm(Mat img) : img(move(img)) {}
 
 ZSAlgorithm::~ZSAlgorithm() = default;
 
-void ZSAlgorithm::verify_conditions(vector<pixel> & aux, int tmp){
-    int row, col;   
-    for (row = 1; row < img.rows - 1; ++row){                                 /* c6*(m-1) */
-        for (col = 1; col < img.cols - 1; ++col){                          /* c7*(n-1)*(m-2) */
-            // cout << row << " - " << col << endl;
-            auto p1 = set_color(img.at<uchar>(row, col));                       /* c8 */
+void ZSAlgorithm::verify_conditions(vector<pixel> &aux, int tmp) {
+    int row, col;
+    for (row = 1; row < img.rows - 1; ++row) {                                /* c6*(m-1) */
+        for (col = 1; col < img.cols - 1; ++col) {                         /* c7*(n-1)*(m-2) */
+            auto p1 = set_color(img.at<uchar>(row, col));                 /* c8 */
             auto [p2, p3, p4, p5, p6, p7, p8, p9] = get_neighbours(row, col);   /* c9 */
 
-            if( p1 == BLACK and                                                 /* c10 */
-                in_range(count_black(row, col), 2, 6) and                       /* c11 */
-                get_transitions(row, col) == 1)
-            {
+            if (p1 == BLACK and                                                 /* c10 */
+                in_range(count_black(row, col), 2, 6) and        /* c11 */
+                get_transitions(row, col) == 1) {
                 if (tmp == 1 and                                                /* c12 */
                     (p2 == WHITE or p4 == WHITE or p6 == WHITE) and             /* c13 */
                     (p4 == WHITE or p6 == WHITE or p8 == WHITE))                /* c14 */
                     aux.emplace_back(row, col);                                 /* c15 */
 
-                else if (tmp == 2 and                                           /* c12 */
+                if (tmp == 2 and                                           /* c12 */
                     (p2 == WHITE or p4 == WHITE or p8 == WHITE) and             /* c13 */
                     (p2 == WHITE or p6 == WHITE or p8 == WHITE))                /* c14 */
                     aux.emplace_back(row, col);                                 /* c15 */
             }
         }
     }
-        for (auto const &[row, col] : aux){                                     /* c16*(n-1)*(m-1) */
-
-            cout << "removing: " << row << ", " << col << endl;
-
-            img.at<uchar>(row, col) = WHITE;                                        /* c */
-        }
+        for (auto const &[row, col] : aux)                                  /* c16*(n-1)*(m-1) */
+            img.at<uchar>(row, col) = WHITE;                                     /* c */
 }
-
 
 //aumentar cuadro blanco al rededor de la imagen
 
 /* Worst Case Analysis:     */
 Mat ZSAlgorithm::solve()
 {
-    int row, col;                                                                   /* c1 */
     vector<pixel> pixels1 = {dummyPixel};                                           /* c2 */
     vector<pixel> pixels2 = {dummyPixel};                                           /* c3 */
+    imshow("result", img);
+    waitKey(0);
     while (!(pixels1.empty() and pixels2.empty())){                                 /* c4* */       /* TO DO */
         pixels1.clear();                                                            /* c5 */
-
-        cout << "Step 1" << endl;
-        verify_conditions(pixels1, 1); 
+        verify_conditions(pixels1, 1);
 
         imshow("result", img);
         waitKey(0);
-        pixels2.clear();                                                            /* c5 */
 
-        cout << "Step 2" << endl;
+        pixels2.clear();                                                            /* c5 */
         verify_conditions(pixels2,2);
 
         imshow("result", img);
@@ -105,10 +95,8 @@ int ZSAlgorithm::get_transitions(int row, int col)
     int transitions = 0;                                             /* c3 */
 
     for (i = 0; i < arr.size() - 1; ++i)                             /* 8*c4 */
-    {
         if (arr[i] == WHITE and arr[i + 1] == BLACK)                 /* c5 */
             ++transitions;                                           /* c6 */
-    }
     return transitions;                                              /* 8c1 + c2 + c3 + 8*c4 + c5 + c6 = c */
 }
 
